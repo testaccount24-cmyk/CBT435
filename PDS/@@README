@@ -1,0 +1,50 @@
+/*
+ FILE435        by Frank Clarke, rexxhead@yahoo.com
+
+ FILE435 replaces an obsolete file on the CBTTAPE libraries.  The
+ original FILE435 was a restatement (as FB-80) of the original FILE433
+ that was VB-255.  FILE433 is now presented as FB-80, obviating the need
+ for the now-obsolete FILE435.
+
+ This new FILE435 provides several routines for maintaining and
+ displaying the userids on a given system:  ALLUSERS, LISTUSR, and
+ USERRPT.  RACF is assumed as the security package.  Some changes will
+ be necessary if your system uses a different security protocol.  If you
+ do modify any of them, the CBT community would be most grateful to have
+ your mods folded in so that this code becomes 'universal'.
+
+ All the code herein is REXXSKEL-based.  REXXSKEL-based routines all
+ behave similarly.  When the first token passed is a '?', the routine
+ displays its HELP-text and terminates.  Parameters are split by a
+ double-open-parentheses Ý((¨ into 'parms' before and 'opts' after.
+ These can be thought of as 'what shall we do?' and 'how shall we do
+ it?'.  Among the diagnostic facilities provided is 'TRACE' by which a
+ user can invoke the routine in any desired trace mode: Ý(( trace ?r¨.
+
+ ALLUSERS is the primary updater.  It examines the complete list of
+ userids one by one, and excludes some userids that have characteristics
+ implying "this isn't a real person".  The USER table is updated to show
+ all the "probably human" userids that remain.  Depending on the userid
+ population on your system, the installer may need to modify the code to
+ properly handle such exclusions (or simply block that code and process
+ ALL userids).  ALLUSERS can only be run by personnel with sufficient
+ authority, viz.:  system programmers.
+      ===> tso allusers ?
+      ===> tso allusers ((trace ?r
+
+ LISTUSR is the primary display routine.  It uses the USER table
+ produced by ALLUSERS.  Anyone can display the USER table with LISTUSR,
+ although some features may not be usable by users with inadequate
+ authority.
+      ===> tso listusr  ?
+      ===> tso listusr  ((trace ?r
+
+ USERRPT relies on the RUNDATA table (and routine) to compare the
+ current population of users to the population as of the last time it
+ was executed.  It reports on userids that seem to be new and those that
+ appear to have been deleted, and resets the RUNDATA table with current
+ information.
+      ===> tso userrpt  ?
+      ===> tso userrpt  ((trace ?r
+
+*/
